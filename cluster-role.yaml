@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: jenkins-nodes
+---
+apiVersion: v1
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: jenkins-nodes
+  name: service-reader
+rules:
+- apiGroups: [""] # "" indicates the core API group
+  resources: ["services","events"]
+  verbs: ["get", "watch", "list"]
+- apiGroups: [""]
+  resources: ["pods"] #Jenkins will need to create and delete the Nodes between others..
+  verbs: ["get", "watch", "list", "create", "delete"]
+- apiGroups: [""]
+  resources: ["pods/log"] #Required to read the logs
+  verbs: ["get"]
